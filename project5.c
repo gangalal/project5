@@ -23,7 +23,6 @@
 #define AD0GDR (*(volatile unsigned int *)(0x40034004))
 #define PINSEL1 (*(volatile unsigned int *)(0x4002C004))
 
-
 void timerInit() {
 	PCONP |= (1 << 1);
 	PCLKSEL0 &= ~(1 << 3) | (1 << 2); // resetting clock selection
@@ -31,14 +30,13 @@ void timerInit() {
 	//to do complete init....
 }
 
-void ADCInit()
-{
+void ADCInit() {
 	PCONP |= (1 << 1);
-	AD0CR = (1<<21);
+	AD0CR = (1 << 21);
 	AD0GDR;
-	AD0CR =0;
-	AD0CR = (1<<21);
-	PINSEL1 = (1<<14); //need to make sure
+	AD0CR = 0;
+	AD0CR = (1 << 21);
+	PINSEL1 = (1 << 14); //need to make sure
 }
 
 static inline void timerStart() {
@@ -67,22 +65,18 @@ void wait_us(int us) {
 	}
 }
 
-int ADCRead(int channel)
-{
-	AD0CR = (1<<channel)|(0<<8)|(1<<21);
-	AD0CR |= (1<<24);
-	while(((AD0GDR >> 31)&1)==0)
-		{
+int ADCRead(int channel) {
+	AD0CR = (1 << channel) | (0 << 8) | (1 << 21);
+	AD0CR |= (1 << 24);
+	while (((AD0GDR >> 31) & 1) == 0) {
 
-		}
-	return (AD0GDR >>4)& (0xFFF);
+	}
+	return (AD0GDR >> 4) & (0xFFF);
 }
-
 
 int main(void) {
 
 	while (1) {
-
 
 	}
 	return 0;
