@@ -19,10 +19,14 @@
 #define PCONP (*(volatile unsigned int *)(0x400FC0C4))
 #define PCLKSEL0 (*(volatile unsigned int *)(0x400FC1A8))
 #define T0TCR (*(volatile unsigned int *)(0x40004004))
+#define DACR (*(volatile unsigned int *)(0x4008C000))
+#define MR2 (*(volatile unsigned int *)(0x40004020))
+#define PINSEL0 (*(volatile unsigned int *)(0x4002C000))
+#define PINSEL1 (*(volatile unsigned int *)(0x4002C004))
+#define PINMODE0 (*(volatile unsigned int *)(0x4002C040))
 
 #define AD0CR (*(volatile unsigned int *)(0x40034000))
 #define AD0GDR (*(volatile unsigned int *)(0x40034004))
-#define PINSEL1 (*(volatile unsigned int *)(0x4002C004))
 // TODO #define PINMODE0 (*(volatile unsigned int *)(0x4002 C040))
 
 // Initialize the timer (use timer instead of PWM to set high time and decay length)
@@ -30,19 +34,8 @@
 void timerInit() {
 	PCONP |= (1 << 1);					// set the PCADC bit to power ADC
 	PCLKSEL0 &= ~(1 << 3) | (1 << 2);	// reset clock selection - D type Reg?
-	// PCLKSEL0 |= (0 << 3) | (0 << 2);
-	// PINSEL1 = ( << );					// TODO Select timer pins
-	// PINMODE0 = ( << );					// TODO Select pin mode with timer functions
-}
-
-// Initialize the analog to digital converter
-void ADCInit() {
-	PCONP |= (1 << 1);		// set the PCADC bit to power ADC
-	AD0CR = (1 << 21);		// enable PDN bit to turn on ADC bit
-	AD0GDR;					// read GDR and clear result
-	AD0CR = 0;				// disable PDN Nbit to turn off ADC bit
-	AD0CR = (1 << 21);		// enable PDN bit to turn on ADC bit
-	PINSEL1 = (1 << 14); 	// TODO double check this line of code
+	PINSEL0 |= ( 1<<19 )|(1<<18);		// TODO Select timer pins
+	PINMODE0 |= ( 1<<19 )|(1<<18);	 // TODO Select pin mode with timer functions
 }
 
 static inline void timerStart() {
@@ -81,10 +74,31 @@ int ADCRead(int channel) {
 	return (AD0GDR >> 4) & (0xFFF);		// read result, return result
 }
 
-int main(void) {
-
-	while (1) {
+void wait_ticks(unsigned long count) {
+	volatile int ticks;
+	for (ticks = 0; ticks < count; ticks++) {
 
 	}
+}
+
+int main(void) {
+	PINSEL1 = (1 << 21) | (0 << 20); 	// enable AOUT pins
+	timerInit();
+	while (1) {
+		/*for (int i = 0; i < 1023; i = i + 3) {
+			DACR = i << 6;
+			wait_ticks(1000);
+
+		}
+
+
+		for (int i = 1023; i > 0; i = i - 3) {
+			DACR = i << 6;
+			wait_ticks(1000);
+		}*/
+
+
+	}
+
 	return 0;
 }
