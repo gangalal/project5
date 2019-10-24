@@ -108,10 +108,25 @@ void wait_ticks(unsigned long count) {
 int main(void) {
 	PINSEL1 = (1 << 21) | (0 << 20); 	// enable AOUT pins
 	timerInit0();
+	time_t t;
+	srand((unsigned) time(&t));
+	int count;
+	int num;
+	printf("Ten Random Numbers:\t");
+	for (count = 1; count <= 10; count++) {
+		num = rand() % 7 *1.5;
+		printf("%d\t", num);
+	}
+	
 	while (1) {
 		/*for (int i = 0; i < 1023; i = i + 3) {
 			DACR = i << 6;
-			wait_ticks(1000);
+
+		 wait_ticks(300);
+
+		 DACR = 0;
+
+		 wait_ticks(300);
 		}
 		for (int i = 1023; i > 0; i = i - 3) {
 			DACR = i << 6;
