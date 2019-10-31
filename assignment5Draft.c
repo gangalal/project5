@@ -58,7 +58,7 @@ int waveTable[256];
 // fill in the values for the sine wavetable
 void fillWaveTable(){
 	for (int i = 0; i < 256; i++){
-		waveTable[i] = (int)(1023)*(1 + sin(6.28*i/256.0));
+		waveTable[i] = (4)*(1 + sin(6.28*i/256.0));
 	}
 }
 
@@ -312,23 +312,19 @@ int main(void) {
 	fillWaveTable();
 	int i = 0;
 	while (1) {
-		/*for(int i = 0; i < 256; i ++) {
-			DACR = waveTable[i] << 6;
-			wait_ticks(157142*2); // wait two seconds; math can be found in assn. 2 report
-
-	}*/
-		//genSineWF();
-		//printf("hello world\n");
-
 		DACR = waveTable [i >> 8] << 6;
 		wait_ticks(1000);
 		i = (i + 1) & 0xFFFF;
-
-
-
+		
+		/*for(int i = 0; i < 256; i ++) {
+			DACR = waveTable[i] << 6;
+			wait_ticks(157142*2); // wait two seconds; math can be found in assn. 2 report
+		}*/
+		//genSineWF();
+		//printf("hello world\n");
 
 		/*if (getSwitch1 () == 0) {
-//			count = 1;
+			count = 1;
 			diagnosticMode();
 		} else if (((FIO0PIN >> 11) & 0x01) == 0) {
 			therePersonTeamWork();
