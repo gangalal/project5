@@ -36,7 +36,6 @@
 #define T2MCR (*(volatile unsigned int *)(0x40090014)) 		// MCR Match Register for Timer 2
 #define T2CTCR (*(volatile unsigned int *)(0x40090070)) 	// Count Control Register for Timer 2 Selects between timer and counter mode
 #define T2MR3 (*(volatile unsigned int *)(0x40090024)) 		// Match Register 3
-
 #define DACR (*(volatile unsigned int *)(0x4008C000)) 		// DAC Register
 
 #define FIO0DIR (*(volatile unsigned int *)0x2009c000)		// Direction Register
@@ -98,6 +97,7 @@ static inline void timer0Reset() {
 	T0TCR &= ~(1 << 1);	//
 }
 
+
 /**
  * Read Timer 0
  */
@@ -105,12 +105,14 @@ static inline int timer0Read_us(void) {
 	return T0TC; // Read Timer 0 Counter
 }
 
+
 /**
  *  True read Timer 0 for floating value in DACR conversion
  */
 static inline float timer0Read(void) {
 	return timer0Read_us() / 1000000.0;
 }
+
 
 /**
  * wait function in microseconds
@@ -122,6 +124,7 @@ void wait_us(float usec) {
 	}
 }
 
+
 /**
  * wait function in seconds
  */
@@ -129,12 +132,14 @@ void wait(float sec) {
 	wait_us(sec * 1000000);
 }
 
+
 /**
  * Start Timer 2
  */
 static inline void timer2Start() {
 	T2TCR |= (1 << 0);
 }
+
 
 /**
  * Initialize Timer 2 to control the timing of decay for each tone
@@ -152,6 +157,7 @@ void timer2Init() {
 	timer2Start();
 }
 
+
 /**
  * Reset Timer 2
  */
@@ -162,6 +168,7 @@ static inline void timer2Reset() {
 	}
 	T2TCR &= ~(1 << 1);	//
 }
+
 
 /**
  * Configure Timer 2 for frequency generation
@@ -175,6 +182,7 @@ void configT2MR3(int freq) {
 		DACR = aout << 6;
 	}
 }
+
 
 /**
  * diagnostic mode
@@ -210,6 +218,7 @@ void generateRandomNum() {
 
 }
 
+
 /**
  * waits for count*1sec
  */
@@ -235,6 +244,10 @@ void wait_ticks1(unsigned long count) {
 	}
 }
 
+
+/**
+*random simulation
+*/
 void randomSimulation() {
 	generateRandomNum();
 	configT2MR3(520);
@@ -270,6 +283,7 @@ void randomSimulation() {
 
 }
 
+
 /**
  * generates sine wave
  */
@@ -282,6 +296,7 @@ void genSineWF() {
 	}
 
 }
+
 
 /**
  * the main function
